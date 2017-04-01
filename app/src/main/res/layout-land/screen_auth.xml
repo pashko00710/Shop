@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.uptop.mvpgoodpractice.ui.screens.auth.AuthView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="88dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="@dimen/spacing_0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/spacing_16dp"
+            android:paddingBottom="@dimen/spacing_16dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_alignParentTop="true">
+                <ImageView
+                    android:id="@+id/logo_img"
+                    android:layout_width="@dimen/spacing_35dp"
+                    android:layout_height="@dimen/spacing_50dp"
+                    android:src="@drawable/avd_vector_anim"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/app_name_txt"
+                    android:text="@string/app_name"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_40sp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/auth_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true">
+
+                <FrameLayout
+                    android:id="@+id/panel_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    tools:background="@android:color/holo_blue_light">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/auth_card"
+                    style="@style/CustomCard.LoginCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/login_email_wrap"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/login_email_et"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textEmailAddress"
+                                android:textColor="@android:color/black"
+                                android:textColorHint="@android:color/darker_gray"
+                                android:textSize="@dimen/text_size_14sp"
+                                android:hint="Введите email"/>
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/login_password_wrap"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/login_password_et"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPassword"
+                                android:textColor="@android:color/black"
+                                android:textColorHint="@android:color/darker_gray"
+                                android:textSize="@dimen/text_size_14sp"
+                                android:hint="Введите пароль"/>
+                        </android.support.design.widget.TextInputLayout>
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <Button
+                    android:id="@+id/show_catalog_btn"
+                    style="@style/CustomButton"
+                    android:theme="@style/ShowBtn"
+                    android:layout_gravity="bottom"
+                    android:text="Смотреть каталог"/>
+
+                </FrameLayout>
+
+
+                <ProgressBar
+                    android:id="@+id/enter_pb"
+                    style="@style/CustomButton"
+                    android:theme="@style/ShowBtn"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/login_btn"
+                    style="@style/CustomButton"
+                    android:theme="@style/StartBtn"
+                    android:text="Войти"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/social_wrap"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/spacing_16dp"
+            android:paddingRight="@dimen/spacing_16dp"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/fb_btn"
+                android:layout_width="@dimen/spacing_56dp"
+                android:layout_height="@dimen/spacing_56dp"
+                android:layout_marginTop="@dimen/spacing_16dp"
+                android:layout_marginBottom="@dimen/spacing_16dp"
+                android:background="@drawable/fb_selector_btn"/>
+            <ImageButton
+                android:id="@+id/tw_btn"
+                android:layout_width="@dimen/spacing_56dp"
+                android:layout_height="@dimen/spacing_56dp"
+                android:layout_marginTop="@dimen/spacing_16dp"
+                android:layout_marginBottom="@dimen/spacing_16dp"
+                android:background="@drawable/tw_selector_btn"/>
+            <ImageButton
+                android:id="@+id/vk_btn"
+                android:layout_width="@dimen/spacing_56dp"
+                android:layout_height="@dimen/spacing_56dp"
+                android:layout_marginTop="@dimen/spacing_16dp"
+                android:layout_marginBottom="@dimen/spacing_16dp"
+                android:background="@drawable/vk_selector_btn"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</me.uptop.mvpgoodpractice.ui.screens.auth.AuthView>

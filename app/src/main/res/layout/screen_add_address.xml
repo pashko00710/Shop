@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.uptop.mvpgoodpractice.ui.screens.address.AddressView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/spacing_16dp"
+        android:paddingLeft="@dimen/spacing_16dp"
+        android:paddingRight="@dimen/spacing_16dp"
+        android:paddingTop="@dimen/spacing_16dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/Icon"
+                android:layout_marginTop="@dimen/spacing_16dp"
+                app:srcCompat="@drawable/ic_font_download_black_24dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/address_delivery_location">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/delivery_location"
+                    style="@style/CustomEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionGo"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_16dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/Icon"
+                android:layout_marginTop="@dimen/spacing_16dp"
+                android:src="@drawable/ic_place_black_24dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/address_street">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/street_name"
+                    style="@style/CustomEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionGo"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_16dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/address_home">
+
+                <android.support.design.widget.TextInputEditText
+                    android:nextFocusDown="@+id/apartment_number"
+                    android:id="@+id/house_number"
+                    style="@style/CustomEditText.AddressNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionGo"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_32dp"
+                android:layout_marginRight="@dimen/spacing_32dp"
+                android:layout_weight="1"
+                android:hint="@string/address_apartment">
+
+                <android.support.design.widget.TextInputEditText
+                    android:nextFocusDown="@+id/floor_number"
+                    android:id="@+id/apartment_number"
+                    style="@style/CustomEditText.AddressNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionGo"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/address_floor">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/floor_number"
+                    style="@style/CustomEditText.AddressNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionGo"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_16dp"
+            android:hint="@string/address_comment">
+
+            <android.support.design.widget.TextInputEditText
+                android:imeOptions="actionDone"
+                android:id="@+id/order_comment"
+                style="@style/CustomEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/add_button"
+        style="@style/CustomButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/spacing_16dp"
+        android:text="@string/address_add_address"
+        android:theme="@style/StartButton"/>
+
+
+    </RelativeLayout>
+
+</me.uptop.mvpgoodpractice.ui.screens.address.AddressView>

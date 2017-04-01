@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="flow-1.0.0-alpha2">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/f88a5c4bc0b09abd7bef6fae06264f1ed2898e75/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/f88a5c4bc0b09abd7bef6fae06264f1ed2898e75/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$APPLICATION_HOME_DIR$/gradle/gradle-2.14.1/caches/modules-2/files-2.1/com.squareup.flow/flow/1.0.0-alpha2/ca0d90ca9a600b89d5d0b6327050a519f5c1d7a3/flow-1.0.0-alpha2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

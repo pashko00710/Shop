@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                style="@style/icon.left"
+                android:src="@drawable/ic_location_on_black_24dp"
+                />
+            <LinearLayout
+                android:id="@+id/account_address_linear_house"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_140dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/spacing_32dp"
+                android:layout_marginRight="@dimen/spacing_16dp">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Дом:">
+                    <EditText
+                        style="@style/overall.account_edittext"
+                        android:id="@+id/account_house"
+                        android:background="#00000000"
+                        android:maxLength="60"
+                        android:paddingTop="@dimen/spacing_8dp"
+                        android:paddingBottom="@dimen/spacing_8dp"
+                        android:text="9899"
+                        android:enabled="false"
+                        android:hint="Здесь будет ваш номер дома"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Комментарий:">
+                    <EditText
+                        style="@style/overall.account_edittext"
+                        android:id="@+id/account_comment_house"
+                        android:background="#00000000"
+                        android:paddingTop="@dimen/spacing_8dp"
+                        android:paddingBottom="@dimen/spacing_8dp"
+                        android:maxLength="80"
+                        android:text="9899"
+                        android:enabled="false"
+                        android:hint="Здесь будет ваш комментарий"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/view_line.horizontal"></View>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                style="@style/icon.left"
+                android:src="@drawable/ic_location_on_black_24dp"
+                />
+            <LinearLayout
+                android:id="@+id/account_address_linear_work"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_140dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/spacing_32dp"
+                android:layout_marginRight="@dimen/spacing_16dp">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=" Работа:">
+
+                    <EditText
+                        style="@style/overall.account_edittext"
+                        android:id="@+id/account_work"
+                        android:background="#00000000"
+                        android:paddingTop="@dimen/spacing_8dp"
+                        android:paddingBottom="@dimen/spacing_8dp"
+                        android:maxLength="60"
+                        android:enabled="false"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Комментарий:">
+                    <EditText
+                        style="@style/overall.account_edittext"
+                        android:id="@+id/account_comment_work"
+                        android:background="#00000000"
+                        android:paddingTop="@dimen/spacing_8dp"
+                        android:paddingBottom="@dimen/spacing_8dp"
+                        android:maxLength="80"
+                        android:enabled="false"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/view_line.horizontal"></View>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

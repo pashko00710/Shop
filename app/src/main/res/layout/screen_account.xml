@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.uptop.mvpgoodpractice.ui.screens.account.AccountView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+
+            <ImageView
+                android:id="@+id/account_background"
+                android:layout_height="210dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/background_account_avatar"
+                android:layout_width="match_parent" />
+
+            <TextView
+                android:id="@+id/profile_name_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/spacing_50dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_24sp"/>
+
+
+            <ImageView
+                android:id="@+id/user_avatar"
+                android:layout_width="@dimen/spacing_140dp"
+                android:layout_height="@dimen/spacing_140dp"
+                android:layout_below="@+id/account_background"
+                android:layout_marginTop="140dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="bottom|center_horizontal"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/screen_account_info"></include>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</me.uptop.mvpgoodpractice.ui.screens.account.AccountView>

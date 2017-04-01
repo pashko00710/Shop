@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">MvpGoodPractice RealmMp </string>
+
+    <!--Fonts-->
+    <string name="roboto_black">sans-serif-black</string>
+    <string name="roboto_thin">sans-serif-thin</string>
+    <string name="roboto_medium">sans-serif-medium</string>
+    <string name="roboto_regular">sans-serif</string>
+    <string name="roboto_light">sans-serif-light</string>
+    <string name="roboto_condensed">sans-serif-condensed</string>
+
+    <string name="myCustomFontBold">PTBebasNeueRegular</string>
+    <string name="email_input_error">Введите email адрес в правильном формате: email@example.com</string>
+    <string name="password_input_error">Длина пароля минимум 8 символов</string>
+    <string name="unknown_error">Произошла неизвестная ошибка</string>
+    <string name="catalog_loading_message">Подождите пока загружается каталог</string>
+    <string name="catalog_loaded_message">Каталог успешно загружен</string>
+    <string name="user_authenticating_message">Авторизуемся на сервере, подождите...</string>
+    <string name="email_or_password_wrong_format">Email или пароль не правильного формата</string>
+    <string name="authentificate_successful">Вход успешный</string>
+    <string name="error_network_failure">Подключение к интернету отсутствует</string>
+    <string name="open_drawer">open</string>
+    <string name="close_drawer">close</string>
+    <string name="account_name">Архипов Павел</string>
+    <string name="add_address">Добавить адрес</string>
+    <string name="error_message">Ошибка загрузки файла</string>
+    <string name="account_removing">Удаление</string>
+    <string name="account_editing">Редактирование</string>
+    <string name="account_remove_address_confirm">Вы уверены, что хотите удалить адрес из списка?</string>
+    <string name="account_yes">Да</string>
+    <string name="account_ok">OK</string>
+    <string name="account_cancel">Отмена</string>
+    <string name="address_delivery_location">Название места доставки</string>
+    <string name="comment_add_field">Напишите здесь свой комментарий</string>
+    <string name="address_street">Улица</string>
+    <string name="address_home">Дом</string>
+    <string name="address_apartment">Квартира</string>
+    <string name="address_floor">Этаж</string>
+    <string name="address_comment">Комментарий:</string>
+    <string name="account_remove">Удалить</string>
+    <string name="account_edit">Редактировать</string>
+    <string name="address_add_address">Добавить адрес</string>
+    <string name="detail_about_product">О товаре</string>
+    <string name="detail_count">Количество</string>
+    <string name="detail_price">Стоимость</string>
+    <string name="detail_description">Описание</string>
+    <string name="detail_comment">Комментарии</string>
+    <string name="internet_is_not_defined">Проверьте подключение к интернету</string>
+</resources>

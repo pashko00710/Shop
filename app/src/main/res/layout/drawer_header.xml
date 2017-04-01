@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:paddingTop="@dimen/avatar_padding_top"
+    android:paddingBottom="@dimen/avatar_padding_bottom"
+    android:paddingRight="@dimen/avatar_padding_right"
+    android:paddingLeft="@dimen/avatar_padding_left"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:background="@drawable/drawer_background">
+    <ImageView
+        android:id="@+id/drawer_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/drawer_avatar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/drawer_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        android:fontFamily="@string/roboto_medium"
+        android:layout_alignParentBottom="true"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"/>
+
+</RelativeLayout>
