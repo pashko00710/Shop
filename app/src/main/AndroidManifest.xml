@@ -53,6 +53,22 @@
             </meta-data>
         </provider>
 
+        <activity
+            android:name="com.vk.sdk.VKServiceActivity"
+            android:label="ServiceActivity"
+            android:theme="@style/VK.Transparent"/>
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+
+        <!--<meta-data-->
+            <!--android:name="io.fabric.ApiKey"-->
+            <!--android:value="znfyj7ZC01x4HPvmZTAap7hEy" />-->
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="422c33421367dbc55012684ab469c0d10a9940c5" />
+
 
     </application>
 

@@ -43,7 +43,7 @@ public class AuthModelTest {
 
     @Test
     public void loginUser() throws Exception {
-        model.loginUser("any@mail.ru", "password");
+        model.signInUser("any@mail.ru", "password");
         verify(mockDataManager, only()).loginUser(any(UserLoginReq.class));
     }
 

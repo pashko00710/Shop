@@ -45,6 +45,8 @@ public class RealmManager {
             productRealm.setFavorite(isFavorite);
         }
 
+        Log.e("this", "saveProductResponseToRealm: "+productRealm.getProductName());
+
         realm.executeTransaction(realm1 -> realm1.insertOrUpdate(productRealm)); //добавляем или обновляем продукт в транзакцию
 
         realm.close();

@@ -38,9 +38,9 @@ public class CatalogModelTest {
     }
 //
 //    @Test
-//    public void loginUser() throws Exception {
-//        model.loginUser("any@mail.ru", "password");
-//        verify(mockDataManager, only()).loginUser(any(UserLoginReq.class));
+//    public void signInUser() throws Exception {
+//        model.signInUser("any@mail.ru", "password");
+//        verify(mockDataManager, only()).signInUser(any(UserLoginReq.class));
 //    }
 
 

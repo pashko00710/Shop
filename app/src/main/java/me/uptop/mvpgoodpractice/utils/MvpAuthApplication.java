@@ -5,6 +5,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.vk.sdk.VKSdk;
+
+import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import me.uptop.mvpgoodpractice.di.DaggerService;
 import me.uptop.mvpgoodpractice.di.components.AppComponent;
@@ -19,6 +24,11 @@ import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 
 public class MvpAuthApplication extends Application {
+
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+    private static final String TWITTER_KEY = "znfyj7ZC01x4HPvmZTAap7hEy";
+    private static final String TWITTER_SECRET = "3ZSKY9YRwdguJ9Q7HMIREYatYr6B7XYFyBB25DgOVFl7iGTqxz";
+
     public static SharedPreferences sSharedPreferences;
     private static Context sContext;
     private static AppComponent appComponent;
@@ -29,8 +39,11 @@ public class MvpAuthApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
 
         Realm.init(this);
+        VKSdk.initialize(this);
 
         sContext = getApplicationContext();
         createDaggerComponent();

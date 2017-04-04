@@ -215,4 +215,10 @@ public class SplashActivity extends AppCompatActivity implements IRootView {
         return getContext();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mRootPresenter.onActivityResultHandler(requestCode, resultCode, data);
+    }
+
 }

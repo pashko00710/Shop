@@ -99,5 +99,9 @@ public class AccountModel extends AbstractModel {
     private void uploadAvatarOnServer(String imageUri) {
         mJobManager.addJobInBackground(new UploadAvatarJob(imageUri));
     }
+
+    public void updateUserInfo() {
+        mUserInfoObs.onNext(getUserProfileInfo());
+    }
     //endregion
 }

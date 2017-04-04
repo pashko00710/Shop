@@ -1,8 +1,32 @@
 package me.uptop.mvpgoodpractice.ui.screens.auth;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.internal.CallbackManagerImpl;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKCallback;
+import com.vk.sdk.VKSdk;
+import com.vk.sdk.VKServiceActivity;
+import com.vk.sdk.api.VKError;
+
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +49,10 @@ import me.uptop.mvpgoodpractice.ui.activities.SplashActivity;
 import me.uptop.mvpgoodpractice.utils.ConstantManager;
 import mortar.MortarScope;
 import mortar.ViewPresenter;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
+
+import static android.support.annotation.VisibleForTesting.NONE;
 
 @Screen(R.layout.screen_auth)
 public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
@@ -83,6 +111,11 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
         private boolean emailOk = false;
         private boolean passwordOk = false;
         private boolean mIsCatalogLoading=false;
+        private boolean mTestMode;
+        private CompositeSubscription mCompositeSubscription;
+        private LoginManager mLoginManager;
+        private CallbackManager mCallbackManager;
+        private TwitterAuthClient client = new TwitterAuthClient();
 
         @Inject
         RootPresenter mRootPresenter;
@@ -110,6 +143,7 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
+            mCompositeSubscription = new CompositeSubscription();
 
             if(mScreen.contains("Catalog")) {
                 mRootPresenter.newActionBarBuilder()
@@ -127,6 +161,10 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
                 }
             } else {
                 getRootView().showError(new NullPointerException("Что то пошло не так"));
+            }
+
+            if (!mTestMode) {
+                initSocialSdk();
             }
         }
 
@@ -172,7 +210,7 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
                     if (emailOk && passwordOk) {
                         getRootView().showMessage(getView().getContext().getString(R.string.user_authenticating_message));
                         loginUser(getView().getEmail(), getView().getPassword());
-//                    mAuthModel.loginUser(getView().getAuthPanel().getUserEmail(), getView().getAuthPanel().getUserPassword());
+//                    mAuthModel.signInUser(getView().getAuthPanel().getUserEmail(), getView().getAuthPanel().getUserPassword());
                     } else {
                         getView().errorAuthForm();
                         if (!emailOk) getView().setWrongEmailError();
@@ -185,7 +223,7 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
 
         private void loginUser(String userEmail, String userPassword) {
 //            if (NetworkStatusChecker.isNetworkAvailable()) {
-//                Observable<UserRes> code = mAuthModel.loginUser(userEmail, userPassword);
+//                Observable<UserRes> code = mAuthModel.signInUser(userEmail, userPassword);
 //                code.map(UserRes::getFullName)
 //                        .subscribe(new Subscriber<String>() {
 //                            @Override
@@ -205,7 +243,7 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
 //                        });
 
             //for unit tests
-            mAuthModel.loginUser(userEmail, userPassword)
+            mAuthModel.signInUser(userEmail, userPassword)
                     .subscribe(userRes -> {},
                             throwable -> {
                                 getRootView().showError(throwable);
@@ -220,24 +258,54 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
 
         @Override
         public void clickOnFb() {
-            if (getRootView()!=null) {
-                getRootView().showMessage("clickOnFb");
+            if (!mAuthModel.isAuthUser()) {
+                if (mLoginManager !=null) {
+                    mLoginManager.logInWithReadPermissions(((Activity) getRootView()), Arrays.asList("email"));
+                }
+            } else {
+                if (getRootView() != null) {
+                    getRootView().showMessage("Вы ужe авторизованы как " + mAuthModel.getUserFullName());
+                }
             }
         }
 
         @Override
         public void clickOnVk() {
-            if (getRootView()!=null) {
-                getRootView().showMessage("clickOnVk");
+            if (!mAuthModel.isAuthUser()) {
+                Activity runningActivity = (Activity) getRootView();
+                VKSdk.login(runningActivity, "email");
+            } else {
+                if (getRootView() != null) {
+                    getRootView().showMessage("Вы ужe авторизованы как " + mAuthModel.getUserFullName());
+                }
             }
         }
 
         @Override
         public void clickOnTwitter() {
-            if (getRootView()!=null) {
-                getRootView().showMessage("clickOnTwitter");
+            if (!mAuthModel.isAuthUser()) {
+                Activity runningActivity = (Activity) getRootView();
+                TwitterAuthConfig config = new TwitterAuthConfig("znfyj7ZC01x4HPvmZTAap7hEy", "3ZSKY9YRwdguJ9Q7HMIREYatYr6B7XYFyBB25DgOVFl7iGTqxz");
+                TwitterCore core = new TwitterCore(config);
+                core.logIn(runningActivity, callback);
+            } else {
+                if (getRootView() != null) {
+                    getRootView().showMessage("Вы ужe авторизованы как " + mAuthModel.getUserFullName());
+                }
             }
         }
+
+        Callback<TwitterSession> callback = new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                onSocialResult(result, SocialSdkType.TWITTER);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                onSocialError(exception, SocialSdkType.TWITTER);
+            }
+        };
 
         @Override
         public void clickOnShowCatalog() {
@@ -325,6 +393,169 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
         public void onLoginError(String message) {
             if (getRootView()!=null) {
                 getRootView ().showMessage(message);
+            }
+        }
+
+        final FacebookCallback<LoginResult> facebookCallback = new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                onSocialResult(loginResult, SocialSdkType.FB);
+            }
+
+            @Override
+            public void onCancel() {
+                onSocialCancel();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                onSocialError(error, SocialSdkType.FB);
+            }
+        };
+
+        @Override
+        public void initSocialSdk() {
+            if (mLoginManager == null) {
+                mLoginManager  = LoginManager.getInstance();
+            }
+            if (mCallbackManager == null) {
+                mCallbackManager = CallbackManager.Factory.create();
+                mLoginManager.registerCallback(mCallbackManager, facebookCallback);
+            }
+            mCompositeSubscription.add(subscribeOnActivityResult());
+        }
+
+        private Subscription subscribeOnActivityResult() {
+            return mRootPresenter.getActivityResultSubject()
+                    .subscribe(activityResultDto -> {
+                                Log.e("ACTIVITYRESULT", "subscribeOnActivityResult: ");
+                                final int requestCode = activityResultDto.getRequestCode();
+                                Log.e("ACTIVITYRESULT", "subscribeOnActivityResult: "+requestCode);
+                                final int resultCode = activityResultDto.getResultCode();
+                                final Intent intent = activityResultDto.getIntent();
+                                if (requestCode == VKServiceActivity.VKServiceType.Authorization.getOuterCode()) {
+                                    VKSdk.onActivityResult(requestCode, resultCode, intent, vkCallback); // передаем результат авторизации в VK SDK
+                                }
+
+                                if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
+                                    mCallbackManager.onActivityResult(requestCode, resultCode, intent);
+                                }
+
+                                if(requestCode == client.getRequestCode()) {
+                                    Log.e("ACTIVITYRESULT", "subscribeOnActivityResult: norm");
+                                    client.onActivityResult(requestCode, resultCode, intent);
+                                }
+
+                                if (resultCode == Activity.RESULT_CANCELED &&
+                                        (requestCode == VKServiceActivity.VKServiceType.Authorization.getOuterCode()
+                                                || requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()
+                                                || requestCode == client.getRequestCode())) {
+                                    onSocialCancel();
+                                }
+                            },
+                            throwable -> {
+                                getRootView().showError(throwable);
+                            });
+
+        }
+
+        final VKCallback<VKAccessToken> vkCallback = new VKCallback<VKAccessToken>() {
+            @Override
+            public void onResult(VKAccessToken res) {
+                onSocialResult(res, SocialSdkType.VK);
+            }
+
+            @Override
+            public void onError(VKError error) {
+                onSocialError(error, SocialSdkType.VK);
+            }
+        };
+
+        @VisibleForTesting(otherwise = NONE)
+        public void testSocial() {
+            mTestMode = true;
+        }
+
+        @Override
+        public void onSocialResult(Object res, SocialSdkType type) {
+            switch (type) {
+
+                case VK:
+                    VKAccessToken vkRes = ((VKAccessToken) res);
+                    final String accessToken = vkRes.accessToken;
+                    final String userId = vkRes.userId;
+                    final String email = vkRes.email;
+                    mAuthModel.signInVk(accessToken, userId, email )
+                            .subscribe(userRes -> {
+                                        if (getRootView() != null) {
+                                            getRootView().showMessage("Вы успешно авторизованы как " + userRes.getFullName());
+                                        }
+                                    },
+                                    throwable -> {
+                                        if (getRootView() != null) {
+                                            getRootView().showError(throwable);
+                                        }
+                                    },
+                                    () -> {
+                                        mRootPresenter.updateUserInfo();
+                                    });
+                    break;
+                case FB:
+                    LoginResult fbRes = ((LoginResult) res);
+                    mAuthModel.signInFb(fbRes.getAccessToken().getToken(), fbRes.getAccessToken().getUserId()).subscribe(userRes -> {
+                                if (getRootView() != null) {
+                                    Log.e("FB", "onSocialResult: ");
+                                    getRootView().showMessage("Вы успешно авторизованы как " + userRes.getFullName());
+                                }
+                            },
+                            throwable -> {
+                                if (getRootView() != null) {
+                                    getRootView().showError(throwable);
+                                }
+                            },
+                            () -> {
+                                mRootPresenter.updateUserInfo();
+                            });
+
+                    break;
+                case TWITTER:
+//                    Activity activity = (Activity) getRootView();
+//                    Handler mainHandler = new Handler(getView().getContext().getMainLooper());
+//
+//                    Runnable myRunnable = () -> {
+//                        client.authorize(activity, callback);
+//                    };
+//                    mainHandler.post(myRunnable);
+//                    client.authorize(activity, callback);
+//                    TwitterSession twToken = ((TwitterSession) res);
+                    Result<TwitterSession> twToken = ((Result) res);
+                    mAuthModel.signInTwitter(twToken.data.getAuthToken().toString(), String.valueOf(twToken.data.getUserId())).subscribe(userRes -> {
+                                if (getRootView() != null) {
+                                    Log.e("TW", "onSocialResult: ");
+                                    getRootView().showMessage("Вы успешно авторизованы как " + userRes.getFullName());
+                                }
+                            },
+                            throwable -> {
+                                if (getRootView() != null) {
+                                    getRootView().showError(throwable);
+                                }
+                            },
+                            () -> {
+                                mRootPresenter.updateUserInfo();
+                            });
+                    break;
+            }
+        }
+
+        @Override
+        public void onSocialError(Object res, SocialSdkType type) {
+
+        }
+
+        @Override
+        public void onSocialCancel() {
+            if (getRootView() != null) {
+                getRootView().showMessage("Авторизация отменена");
             }
         }
 

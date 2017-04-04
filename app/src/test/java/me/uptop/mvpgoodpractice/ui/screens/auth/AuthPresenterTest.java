@@ -252,13 +252,13 @@ public class AuthPresenterTest {
         given(mockView.getEmail()).willReturn(expectedEmail);
         given(mockView.getPassword()).willReturn(expectedPassword);
         given(mockView.getContext().getString(anyInt())).willReturn("^[a-zA-Z_0-9]{3,}@[a-zA-Z_0-9.]{2,}\\.[a-zA-Z0-9]{2,}$");
-        given(mockModel.loginUser(expectedEmail, expectedPassword)).willReturn(Observable.empty());
+        given(mockModel.signInUser(expectedEmail, expectedPassword)).willReturn(Observable.empty());
 
         //when
         mPresenter.clickOnLogin();
 
         //then
-        then(mockModel).should(times(1)).loginUser(expectedEmail, expectedPassword);
+        then(mockModel).should(times(1)).signInUser(expectedEmail, expectedPassword);
         then(mockView).should(atLeast(1)).hideLoginBtn();
         then(mockView).should(atLeast(1)).showIdleWithAnim();
     }

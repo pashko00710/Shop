@@ -6,7 +6,12 @@ public class ConstantManager {
     public static final String PATTERN_PASSWORD = "^\\S{8,}$";
     public static final String BASKET_COUNT = "BUSKET_COUNT";
 
-    public static final String BASE_URL = "https://skba1.mgbeta.ru/api/v1/";
+
+//    public static final String BASE_URL = "https://skba1.mgbeta.ru/api/v1/";
+    public static final String BASE_URL = "https://private-8967d4-middleappskillbranch.apiary-mock.com";
+    public static final String FB_BASE_URL = "https://graph.facebook.com/v2.8/";
+    public static final String VK_BASE_URL = "https://api.vk.com/method/";
+    public static final String TW_BASE_URL = "https://api.twitter.com/1.1/users/";
     public static final long MAX_CONNECTION_TIMEOUT = 5000;
     public static final long MAX_READ_TIMEOUT = 5000;
     public static final long MAX_WRITE_TIMEOUT = 5000;

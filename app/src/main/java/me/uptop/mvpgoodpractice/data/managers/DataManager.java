@@ -15,16 +15,21 @@ import javax.inject.Inject;
 import io.realm.RealmResults;
 import me.uptop.mvpgoodpractice.data.network.RestCallTransformer;
 import me.uptop.mvpgoodpractice.data.network.RestService;
-import me.uptop.mvpgoodpractice.data.network.error.AccessError;
-import me.uptop.mvpgoodpractice.data.network.error.ApiError;
 import me.uptop.mvpgoodpractice.data.network.req.UserLoginReq;
+import me.uptop.mvpgoodpractice.data.network.req.UserSignInReq;
 import me.uptop.mvpgoodpractice.data.network.res.AvatarUrlRes;
+import me.uptop.mvpgoodpractice.data.network.res.FbProfileRes;
 import me.uptop.mvpgoodpractice.data.network.res.ProductRes;
+import me.uptop.mvpgoodpractice.data.network.res.TwProfileRes;
 import me.uptop.mvpgoodpractice.data.network.res.UserRes;
+import me.uptop.mvpgoodpractice.data.network.res.VkProfileRes;
 import me.uptop.mvpgoodpractice.data.network.res.models.AddCommentRes;
 import me.uptop.mvpgoodpractice.data.network.res.models.Comments;
+import me.uptop.mvpgoodpractice.data.storage.dto.FbDataDto;
 import me.uptop.mvpgoodpractice.data.storage.dto.ProductDto;
+import me.uptop.mvpgoodpractice.data.storage.dto.TwDataDto;
 import me.uptop.mvpgoodpractice.data.storage.dto.UserAddressDto;
+import me.uptop.mvpgoodpractice.data.storage.dto.VKDataDto;
 import me.uptop.mvpgoodpractice.data.storage.realm.OrdersRealm;
 import me.uptop.mvpgoodpractice.data.storage.realm.ProductRealm;
 import me.uptop.mvpgoodpractice.di.DaggerService;
@@ -141,7 +146,7 @@ public class DataManager {
                        mRealmManager.deleteFromRealm(ProductRealm.class, productRes.getId());
                     }
                 })
-                .distinct(ProductRes::getRemoteId)
+//                .distinct(ProductRes::getRemoteId)
                 .filter(ProductRes::isActive) //пропускаем дальше только активные(неактивные не нужно показывать, они же пустые)
                 .doOnNext(productRes -> {
                     mRealmManager.saveProductResponseToRealm(productRes);
@@ -315,5 +320,65 @@ public class DataManager {
 
     public String getAuthToken() {
         return mPreferencesManager.getAuthToken();
+    }
+
+
+    public String getUserFullName() {
+        return mPreferencesManager.getUserName();
+    }
+
+    public Observable<UserRes> socialSignIn(UserSignInReq signInReq) {
+        return mRestService.socialSignIn(signInReq)
+                .compose(((RestCallTransformer<UserRes>) mRestCallTransformer))
+                .retryWhen(errorObservable ->
+                        errorObservable.zipWith(Observable.range(1, ConstantManager.RETRY_REQUEST_COUNT),
+                                (throwable, retryCount) -> retryCount) // генерируем последовательность чисел от 1 до 5 (число повторений запроса)
+                                .doOnNext(retryCount -> Log.e(TAG, "LOCAL UPDATE request retry " +
+                                        "count: " + retryCount + " " + new Date()))
+                                .map(retryCount ->
+                                        ((long) (ConstantManager.RETRY_REQUEST_BASE_DELAY * Math
+                                                .pow(Math.E, retryCount)))) // расчитываем экспоненциальную задержку
+                                .doOnNext(delay -> Log.e(TAG, "LOCAL UPDATE delay: " +
+                                        delay))
+                                .flatMap(delay -> Observable.timer(delay,
+                                        TimeUnit.MILLISECONDS)) // создаем и возвращаем задержку в миллисекундах
+                );
+    }
+
+    public Observable<VkProfileRes> getVkProfile(String baseUrl, VKDataDto vkDataDto) {
+        return mRestService.signInVk(baseUrl, vkDataDto.getAccessToken());
+    }
+
+    public Observable<FbProfileRes> getFbProfile(String baseUrl, FbDataDto fbDataDto) {
+        return mRestService.getFbProfile(baseUrl, fbDataDto.getAccessToken());
+    }
+
+    public Observable<TwProfileRes> getTwProfile(String baseUrl, TwDataDto twDataDto) {
+        return mRestService.getTwProfile(baseUrl, twDataDto.getAccessToken());
+    }
+
+    // TODO: 27.03.2017 Test me
+    public Observable<UserRes> signInVk(VKDataDto vkDataDto) {
+        return getVkProfile(ConstantManager.VK_BASE_URL + "users.get?fields=photo_200,contacts", vkDataDto)
+                .map(vkProfileRes -> new UserSignInReq(vkProfileRes.getFirstName(), vkProfileRes.getLastName(), vkProfileRes.getAvatar(), vkDataDto.getEmail(), vkProfileRes.getPhone()))
+                .flatMap(this::socialSignIn)
+                .doOnNext(userRes -> mPreferencesManager.saveProfileInfo(userRes))
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<UserRes> signInFb(FbDataDto fbDataDto) {
+        return getFbProfile(ConstantManager.FB_BASE_URL + "me?fields=email,picture.width(200).height(200),first_name,last_name", fbDataDto)
+                .map(fbProfileRes -> new UserSignInReq(fbProfileRes.getFirstName(), fbProfileRes.getLastName(), fbProfileRes.getAvatar(), fbProfileRes.getEmail(), "не задан"))
+                .flatMap(this::socialSignIn)
+                .doOnNext(userRes -> mPreferencesManager.saveProfileInfo(userRes))
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<UserRes> signInTw(TwDataDto twDataDto) {
+        return getTwProfile(ConstantManager.TW_BASE_URL + "show.json?screen_name=pashko00710", twDataDto)
+                .map(twProfileRes -> new UserSignInReq(twProfileRes.getName(), "", twProfileRes.getProfileImageUrl(), "", "не задан"))
+                .flatMap(this::socialSignIn)
+                .doOnNext(userRes -> mPreferencesManager.saveProfileInfo(userRes))
+                .subscribeOn(Schedulers.io());
     }
 }

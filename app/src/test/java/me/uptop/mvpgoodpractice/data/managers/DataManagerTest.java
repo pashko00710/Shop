@@ -79,7 +79,7 @@ public class DataManagerTest {
 //
 //        testMockWebServer.enqueue(mockResponse);
 //
-//        testDataManager.loginUser(new UserLoginReq("anyemail@ya.ru", "password"))
+//        testDataManager.signInUser(new UserLoginReq("anyemail@ya.ru", "password"))
 //                .subscribe(userRes -> {
 //                    assertNotNull(userRes);
 //                    assertEquals("Вася", userRes.getFullName());
@@ -95,7 +95,7 @@ public class DataManagerTest {
 //
 //        testMockWebServer.enqueue(mockResponse);
 //
-//        testDataManager.loginUser(new UserLoginReq("anyemail@ya.ru", "password"))
+//        testDataManager.signInUser(new UserLoginReq("anyemail@ya.ru", "password"))
 //                .subscribe(testSubscriber);
 //
 //        testSubscriber.assertCompleted();
@@ -109,7 +109,7 @@ public class DataManagerTest {
 //
 //        testMockWebServer.enqueue(mockResponse);
 //
-//        testDataManager.loginUser(new UserLoginReq("anyemail@ya.ru", "password"))
+//        testDataManager.signInUser(new UserLoginReq("anyemail@ya.ru", "password"))
 //                .subscribe(userRes -> Assert.fail(), throwable -> {
 //                    assertNotNull(throwable);
 //                    assertEquals("Неверный логин или пароль", throwable.getMessage());
@@ -122,7 +122,7 @@ public class DataManagerTest {
 //
 //        testMockWebServer.enqueue(mockResponse);
 //
-//        testDataManager.loginUser(new UserLoginReq("anyemail@ya.ru", "password"))
+//        testDataManager.signInUser(new UserLoginReq("anyemail@ya.ru", "password"))
 //                .subscribe(testSubscriber);
 //
 //        testSubscriber.assertError(AccessError.class);
@@ -135,7 +135,7 @@ public class DataManagerTest {
 //
 //        testMockWebServer.enqueue(mockResponse);
 //
-//        testDataManager.loginUser(new UserLoginReq("anyemail@ya.ru", "password"))
+//        testDataManager.signInUser(new UserLoginReq("anyemail@ya.ru", "password"))
 //                .subscribe(userRes -> Assert.fail(), throwable -> {
 //                    assertNotNull(throwable);
 //                    assertEquals("Неизвестная ошибка 500", throwable.getMessage());
@@ -148,7 +148,7 @@ public class DataManagerTest {
 //
 //        testMockWebServer.enqueue(mockResponse);
 //
-//        testDataManager.loginUser(new UserLoginReq("anyemail@ya.ru", "password"))
+//        testDataManager.signInUser(new UserLoginReq("anyemail@ya.ru", "password"))
 //                .subscribe(testSubscriber);
 //
 //        testSubscriber.assertError(ApiError.class);

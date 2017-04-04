@@ -33,6 +33,7 @@ import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
 import com.transitionseverywhere.TransitionSet;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import java.util.concurrent.TimeUnit;
 

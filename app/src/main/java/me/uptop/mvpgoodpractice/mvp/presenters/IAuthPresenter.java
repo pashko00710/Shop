@@ -21,4 +21,17 @@ public interface IAuthPresenter {
 
     void onLoginSuccess();
     void onLoginError(String message);
+
+    //social facade
+
+    void initSocialSdk();
+    void onSocialResult(Object res, SocialSdkType type);
+    void onSocialError(Object res, SocialSdkType type);
+    void onSocialCancel();
+
+    enum SocialSdkType {
+        VK,
+        FB,
+        TWITTER
+    }
 }

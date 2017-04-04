@@ -7,5 +7,13 @@ public interface IAuthModel {
     boolean isAuthUser();
     void saveAuthToken(String authToken);
 
-    Observable<UserRes> loginUser(String email, String password);
+    Observable<UserRes> signInUser(String email, String password);
+
+    String getUserFullName();
+
+    Observable<UserRes> signInVk(String accessToken, String userId, String email);
+
+    Observable<UserRes> signInFb(String token, String userId);
+
+    Observable<UserRes> signInTwitter(String token, String userId);
 }

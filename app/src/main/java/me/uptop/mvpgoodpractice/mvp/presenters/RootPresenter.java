@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.fernandocejas.frodo.annotation.RxLogSubscriber;
 
@@ -16,6 +17,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import me.uptop.mvpgoodpractice.data.storage.dto.ActivityPermissionsResultDto;
 import me.uptop.mvpgoodpractice.data.storage.dto.ActivityResultDto;
 import me.uptop.mvpgoodpractice.data.storage.dto.UserInfoDto;
 import me.uptop.mvpgoodpractice.mvp.models.AccountModel;
@@ -30,9 +32,11 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 
 public class RootPresenter extends Presenter<IRootView> {
+    private static final String TAG = "RootPresenter";
     @Inject
     RootModel mRootModel;
     @Inject
@@ -55,10 +59,25 @@ public class RootPresenter extends Presenter<IRootView> {
                 BundleService.getBundleService((SplashActivity) view); //привязываем RootPresenter к SplashActivity
     }
 
+    private BehaviorSubject<ActivityResultDto> mActivityResultSubject = BehaviorSubject.create();
+    private BehaviorSubject<ActivityPermissionsResultDto> mActivityPermissionsResultSubject = BehaviorSubject.create();
     private PublishSubject<ActivityResultDto> mActivityResultDtoObs = PublishSubject.create();
 
-    public PublishSubject<ActivityResultDto> getActivityResultDtoObs() {
-        return mActivityResultDtoObs;
+//    public BehaviorSubject<ActivityResultDto> getActivityResultSubject() {
+//        return mActivityResultSubject;
+//    }
+
+    public BehaviorSubject<ActivityResultDto> getActivityResultSubject() {
+        return mActivityResultSubject;
+    }
+
+    public BehaviorSubject<ActivityPermissionsResultDto> getActivityPermissionsResultSubject() {
+        return mActivityPermissionsResultSubject;
+    }
+
+    public void onActivityResultHandler(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResultHandler requestCode=" + requestCode + " resultCode=" + resultCode);
+        mActivityResultSubject.onNext(new ActivityResultDto(requestCode, resultCode, data));
     }
 
     @Override
@@ -100,6 +119,10 @@ public class RootPresenter extends Presenter<IRootView> {
 
     public ActionBarBuilder newActionBarBuilder() {
         return this.new ActionBarBuilder();
+    }
+
+    public void updateUserInfo() {
+        mAccountModel.updateUserInfo();
     }
 
     @RxLogSubscriber

@@ -68,4 +68,8 @@
     <string name="cart_item_amount">Количество:</string>
     <string name="cart_item_subtotal">Стоимость:</string>
     <string name="title_auth">Авторизация</string>
+
+    <!--VkAuth -->
+    <integer name="com_vk_sdk_AppId">5959707</integer>
+    <string name="facebook_app_id">119971805209705</string>
 </resources>

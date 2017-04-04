@@ -169,6 +169,7 @@ public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
 
             @Override
             public void onNext(ProductRealm productRealm) {
+                Log.e("this", "onNext: "+productRealm.getProductName());
                 mAdapter.addItem(productRealm);
                 if(mAdapter.getCount() -1 == lastPagerPosition) {
                     getRootView().hideLoad();

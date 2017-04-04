@@ -186,7 +186,7 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
 
 
         private void subscribeOnActivityResult() {
-            Observable<ActivityResultDto> activityResultObs = mRootPresenter.getActivityResultDtoObs()
+            Observable<ActivityResultDto> activityResultObs = mRootPresenter.getActivityResultSubject()
                     .filter(activityResultDto -> activityResultDto.getResultCode() == Activity.RESULT_OK);
 
             mActivityResultSub = subscribe(activityResultObs, new ViewSubscriber<ActivityResultDto>() {
